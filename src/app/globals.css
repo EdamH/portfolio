@@ -1,0 +1,350 @@
+@import "tailwindcss";
+
+/* ═══════════════════════════════════════════
+   LIGHT MODE — "Editorial Paper"
+   Warm cream, dark ink, gold accents
+   ═══════════════════════════════════════════ */
+:root {
+  --background: #f8f6f1;
+  --foreground: #1a1a1a;
+  --muted: #6b6b6b;
+  --border: #e0dcd4;
+  --accent: #b08d4c;
+  --accent-muted: #b08d4c22;
+  --card: #ffffff;
+  --card-border: #e8e4dc;
+  --card-hover: #f5f2ec;
+  --surface: #f0ece4;
+  --gradient-gold: linear-gradient(135deg, #b08d4c 0%, #d4b978 50%, #b08d4c 100%);
+
+  /* Hero-specific */
+  --hero-bg: #f0ece4;
+  --hero-text: #1a1a1a;
+  --hero-muted: #7a7a7a;
+  --hero-subtle: #999;
+  --hero-border: #d8d3c9;
+  --hero-glow: rgba(176,141,76,0.08);
+
+  /* Terminal */
+  --terminal-bg: #1a1a1e;
+  --terminal-border: rgba(0,0,0,0.1);
+  --terminal-header-border: rgba(0,0,0,0.06);
+  --terminal-text: #e5e5e5;
+  --terminal-dim: #737373;
+}
+
+/* ═══════════════════════════════════════════
+   DARK MODE — "Architectural Ink"
+   Deep black, warm white, gold accents
+   ═══════════════════════════════════════════ */
+.dark {
+  --background: #09090b;
+  --foreground: #fafaf9;
+  --muted: #a1a1aa;
+  --border: #27272a;
+  --accent: #c9a96e;
+  --accent-muted: #c9a96e33;
+  --card: #141416;
+  --card-border: #1f1f23;
+  --card-hover: #1a1a1e;
+  --surface: #0f0f11;
+  --gradient-gold: linear-gradient(135deg, #c9a96e 0%, #e8d5a8 50%, #c9a96e 100%);
+
+  --hero-bg: #09090b;
+  --hero-text: #ffffff;
+  --hero-muted: #a3a3a3;
+  --hero-subtle: #525252;
+  --hero-border: rgba(255,255,255,0.08);
+  --hero-glow: rgba(201,169,110,0.06);
+
+  --terminal-bg: #111113;
+  --terminal-border: rgba(255,255,255,0.06);
+  --terminal-header-border: rgba(255,255,255,0.04);
+  --terminal-text: #e5e5e5;
+  --terminal-dim: #737373;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-muted: var(--accent-muted);
+  --color-card: var(--card);
+  --color-card-border: var(--card-border);
+  --color-card-hover: var(--card-hover);
+  --color-surface: var(--surface);
+  --font-sans: var(--font-dm-sans);
+  --font-serif: var(--font-instrument-serif);
+  --font-mono: var(--font-jetbrains-mono);
+}
+
+/* ═══════════════ Base ═══════════════ */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--background);
+}
+
+/* ═══════════════ Scrollbar ═══════════════ */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--background); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+/* ═══════════════ Grain overlay ═══════════════ */
+.grain::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+.dark .grain::before {
+  opacity: 0.03;
+}
+
+/* ═══════════════ Section spacing ═══════════════ */
+.section-padding {
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+}
+
+/* ═══════════════ Hairline rule ═══════════════ */
+.hairline {
+  height: 1px;
+  background: var(--border);
+}
+
+/* ═══════════════ Gold gradient text ═══════════════ */
+.text-gradient-gold {
+  background: var(--gradient-gold);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ═══════════════ Grid background ═══════════════ */
+.grid-bg {
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 60px 60px;
+  background-position: center center;
+}
+
+/* ═══════════════ Animations ═══════════════ */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes typewriter {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+/* ═══════════════ Pet companion animations ═══════════════ */
+@keyframes petBreathe {
+  0%, 100% { transform: scaleX(1) scaleY(1); }
+  50% { transform: scaleX(1.03) scaleY(0.97); }
+}
+
+@keyframes petHeartFloat {
+  0% { opacity: 1; transform: translateY(0); }
+  60% { opacity: 0.7; transform: translateY(-20px); }
+  100% { opacity: 0; transform: translateY(-35px); }
+}
+
+@keyframes petTextFloat {
+  0% { opacity: 1; transform: translateY(0); }
+  40% { opacity: 1; transform: translateY(-10px); }
+  100% { opacity: 0; transform: translateY(-25px); }
+}
+
+@keyframes petHop {
+  0%, 100% { transform: scaleX(1) scaleY(1); }
+  40% { transform: scaleX(0.92) scaleY(1.06); }
+  60% { transform: scaleX(1.06) scaleY(0.92); }
+}
+
+@keyframes petWiggle {
+  0%, 100% { transform: rotate(0deg); }
+  20% { transform: rotate(-4deg); }
+  40% { transform: rotate(3deg); }
+  60% { transform: rotate(-2deg); }
+  80% { transform: rotate(2deg); }
+}
+
+.animate-pet-breathe {
+  animation: petBreathe 2.5s ease-in-out infinite;
+}
+
+.animate-pet-hop {
+  animation: petHop 0.5s ease-in-out infinite;
+}
+
+.animate-pet-wiggle {
+  animation: petWiggle 0.8s ease-in-out infinite;
+}
+
+.animate-pet-heart-float {
+  animation: petHeartFloat 0.9s ease-out forwards;
+}
+
+.animate-pet-text-float {
+  animation: petTextFloat 1.4s ease-out forwards;
+}
+
+/* ═══════════════ Pet easter-egg overlay ═══════════════ */
+
+@keyframes eggFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes eggFadeOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+@keyframes eggCupPop {
+  0%   { transform: scale(0) rotate(-12deg); opacity: 0; }
+  50%  { transform: scale(1.15) rotate(4deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+@keyframes eggSparkle {
+  0%   { transform: translate(0, 0) scale(0); opacity: 0; }
+  30%  { opacity: 1; }
+  100% { transform: translate(var(--sx), var(--sy)) scale(1); opacity: 0; }
+}
+
+.animate-egg-in {
+  animation: eggFadeIn 0.25s ease-out forwards;
+}
+
+.animate-egg-out {
+  animation: eggFadeOut 0.4s ease-in forwards;
+}
+
+.animate-egg-cup {
+  animation: eggCupPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.animate-egg-sparkle {
+  animation: eggSparkle 0.8s ease-out forwards;
+}
+
+/* ═══════════════ Cert filter animation ═══════════════ */
+
+@keyframes certIn {
+  0% {
+    opacity: 0;
+    transform: translateY(12px) scale(0.92);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-2px) scale(1.01);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-cert-in {
+  opacity: 0;
+  animation: certIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* ═══════════════ Tech badge ═══════════════ */
+.tech-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.625rem;
+  font-size: 0.75rem;
+  font-family: var(--font-mono), monospace;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 0;
+  transition: all 0.2s ease;
+  letter-spacing: 0.02em;
+}
+
+.tech-badge:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ═══════════════ Theme toggle button ═══════════════ */
+.theme-toggle {
+  position: relative;
+  width: 2.25rem;
+  height: 2.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  overflow: hidden;
+}
+.theme-toggle:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  box-shadow: 0 0 12px var(--accent-muted), inset 0 0 8px var(--accent-muted);
+  transform: scale(1.08);
+}
+.theme-toggle:active {
+  transform: scale(0.95);
+  transition-duration: 0.1s;
+}

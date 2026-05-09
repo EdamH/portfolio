@@ -1,0 +1,13 @@
+{
+  "headers": [
+    {
+      "source": "/resume.pdf",
+      "headers": [
+        {
+          "key": "Content-Disposition",
+          "value": "attachment; filename=Edam_Hamza_Resume.pdf"
+        }
+      ]
+    }
+  ]
+}
