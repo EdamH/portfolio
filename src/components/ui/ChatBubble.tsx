@@ -137,6 +137,7 @@ const SUGGESTIONS = [
 /* ═══ Component ═══ */
 
 export default function ChatBubble() {
+  const [bootDone, setBootDone] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -229,15 +230,33 @@ export default function ChatBubble() {
     }
   }, [isOpen, isAnimating]);
 
-  // Show teaser bubble after 4 seconds (only once)
+  // Wait for boot sequence to finish
   useEffect(() => {
+    // Already booted in a previous session
+    if (sessionStorage.getItem("portfolio-booted")) {
+      setBootDone(true);
+      return;
+    }
+    // Poll for boot completion (set by BootWrapper)
+    const interval = setInterval(() => {
+      if (sessionStorage.getItem("portfolio-booted")) {
+        setBootDone(true);
+        clearInterval(interval);
+      }
+    }, 300);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Show teaser bubble 4 seconds after boot completes (only once)
+  useEffect(() => {
+    if (!bootDone) return;
     const timer = setTimeout(() => {
       if (!teaserDismissed.current && !isOpen) {
         setShowTeaser(true);
       }
     }, 4000);
     return () => clearTimeout(timer);
-  }, [isOpen]);
+  }, [bootDone, isOpen]);
 
   // Dismiss teaser when chat opens
   useEffect(() => {
@@ -441,6 +460,8 @@ export default function ChatBubble() {
     e.preventDefault();
     sendMessage(input);
   };
+
+  if (!bootDone) return null;
 
   return (
     <>
