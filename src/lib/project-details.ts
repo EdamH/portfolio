@@ -50,6 +50,7 @@ export const PROJECT_DETAILS: Record<string, ProjectDetail> = {
       "The core contribution isn't any single agent , it's the platform-level infrastructure. New agents self-register via registerAgent() and inherit the full hook pipeline, billing engine, and security stack. No central wiring needed. Adding a new provider means installing an SDK package and uncommenting one line.",
       "All costs are computed in nanoUSD , integer arithmetic at 10^9 scale , to eliminate floating-point accumulation errors. Preflight estimation uses script-aware heuristics (Latin ~4 chars/token, Arabic/CJK ~1.5), and post-flight reconciliation corrects drift via atomic Redis Lua scripts.",
       "The system has made it trivial so far for us, at Converty, to add AI features at will. Only 1 month since its inception, it has already powered 12 agents across 4 families, with more in development. The unified runner/hook pipeline means every agent benefits from the same security, billing, and rate limiting features without extra work , a force multiplier for our AI development velocity.",
+      "The whole system is deployed on a Kubernetes cluster (k3s). Startup, readiness, and liveness probes ensure zero-downtime deploys. Resource limits and security hardening are baked into the deployment manifests, not bolted on after the fact.",
       "If you'd like to see more of it in action, check out Converty's Platform. If it's AI-powered, chances are it's running on URANUS.",
     ],
     architecture: [
@@ -85,6 +86,14 @@ export const PROJECT_DETAILS: Record<string, ProjectDetail> = {
           { id: "description", label: "Description (3)", detail: "Audio → description · Image OCR → description · URL analysis → description" },
           { id: "lpg", label: "LPG (7)", detail: "Photo → landing page pipeline · Skeleton → Visuals → HTML · 4 version evolution" },
           { id: "order", label: "Order (1)", detail: "Screenshot → structured order · Gemini Vision · Confidence-scored catalog matching" },
+        ],
+      },
+      {
+        title: "Deployment",
+        nodes: [
+          { id: "k8s", label: "Kubernetes (k3s)", detail: "Startup/readiness/liveness probes · Resource limits · Zero-downtime deploys" },
+          { id: "security-hardening", label: "Security Hardening", detail: "Network policies · Pod security · Hardened deployment manifests" },
+          { id: "infra-ops", label: "CI/CD & Infra", detail: "Automated deployments · Shell tooling · Response cache management" },
         ],
       },
     ],

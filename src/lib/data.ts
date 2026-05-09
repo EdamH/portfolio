@@ -34,6 +34,7 @@ export function getFeaturedProjects(): Project[] {
         "Provider-agnostic design. Vertex AI active, OpenAI and Anthropic stubbed and ready",
         "Prompt injection defenses, SSRF hardening, JWT auth with Redis invalidation",
         "Multi-tier caching: Vertex context cache, response cache, embedding cache",
+        "Deployed on Kubernetes (k3s) with startup/readiness/liveness probes, resource limits, and security hardening",
       ],
       tech: [
         "Vertex AI",
@@ -44,6 +45,7 @@ export function getFeaturedProjects(): Project[] {
         "Vercel AI SDK",
         "TypeScript",
         "MongoDB",
+        "Kubernetes",
         "Zod",
       ],
       featured: true,
