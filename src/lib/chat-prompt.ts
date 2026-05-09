@@ -1,121 +1,177 @@
 /**
  * System prompt for the portfolio chatbot.
- * Assembled from data files — gives the LLM full context about Edam.
+ * Dynamically assembled from data files so it stays in sync with the site.
  */
 
-const SECTION_MAP = `
-SECTION MAP — Use these IDs when suggesting the visitor scroll to a section:
-- #hero — Top of page, intro
-- #about — Bio, highlights, education, GitHub activity
-- #projects — Featured projects (URANUS, Excalidraw Atelier, LPG, Trading Pipeline, Slack Clone)
-- #other-projects — 10 additional projects
-- #experience — Work timeline + education
-- #skills — Technical skills by category
-- #certifications — 10 certifications
-- #community — Volunteering, IEEE, IndabaX
-- #contact — Contact form, email, socials
-`;
+import { SITE_CONFIG, SOCIAL_LINKS, NAV_ITEMS, KEY_NUMBERS, getAge } from "./constants";
+import {
+  getFeaturedProjects,
+  getOtherProjects,
+  getExperience,
+  getEducation,
+  getCertifications,
+  getSkills,
+  getLanguages,
+  getCommunity,
+  getAboutData,
+} from "./data";
+import { PROJECT_DETAILS } from "./project-details";
+
+function buildSectionMap(): string {
+  const featuredTitles = getFeaturedProjects().map((p) => p.title).join(", ");
+  const otherCount = getOtherProjects().length;
+  const certCount = getCertifications().length;
+
+  const sections = NAV_ITEMS.map((item) => {
+    const id = item.href.replace("#", "");
+    switch (id) {
+      case "projects":
+        return `- #projects: Featured projects (${featuredTitles})\n- #other-projects: ${otherCount} additional projects`;
+      case "skills":
+        return `- #skills: Technical skills by category\n- #certifications: ${certCount} certifications`;
+      case "contact":
+        return `- #contact: Contact form, email, socials\n- #community: Volunteering, IEEE, IndabaX`;
+      default:
+        return `- #${id}: ${item.label}`;
+    }
+  });
+
+  return `SECTION MAP (use these IDs for [SCROLL:id] hints):
+- #hero: Top of page, intro
+${sections.join("\n")}`;
+}
+
+function buildAboutSection(): string {
+  const about = getAboutData();
+  const languages = getLanguages()
+    .map((l) => `${l.name} (${l.proficiency}${l.detail ? ", " + l.detail : ""})`)
+    .join(", ");
+  const education = getEducation()
+    .map((e) => `${e.degree} from ${e.institution} (${e.period})${e.honors ? " - " + e.honors : ""}${e.detail ? " - " + e.detail : ""}`)
+    .join("; ");
+  const socials = SOCIAL_LINKS.map((s) => `${s.platform}: ${s.url}`).join("\n");
+
+  return `Name: ${SITE_CONFIG.name}
+Age: ${getAge()} (born ${SITE_CONFIG.birthdate})
+Location: ${SITE_CONFIG.location}
+Role: ${SITE_CONFIG.role} at ${SITE_CONFIG.company}
+Education: ${education}
+Languages spoken: ${languages}
+Email: ${SITE_CONFIG.email}
+${socials}
+
+Bio: ${about.bio}
+Highlights: ${about.highlights.join("; ")}`;
+}
+
+function buildFeaturedProjectsSection(): string {
+  return getFeaturedProjects()
+    .map((p) => {
+      const details = PROJECT_DETAILS[p.slug];
+      const stats = p.stats?.map((s) => `${s.value} ${s.label}`).join(", ") ?? "";
+      const tech = p.tech.join(", ");
+      const highlights = p.highlights.length > 0
+        ? "\nHighlights:\n" + p.highlights.map((h) => `- ${h}`).join("\n")
+        : "";
+      const narrative = details?.narrative
+        ? "\n" + details.narrative.join(" ")
+        : "";
+
+      return `### ${p.title} (${p.subtitle})
+${p.description}
+Stats: ${stats}
+Tech: ${tech}${highlights}${narrative}`;
+    })
+    .join("\n\n");
+}
+
+function buildOtherProjectsSection(): string {
+  return getOtherProjects()
+    .map((p) => `- ${p.title}: ${p.description} [${p.tech.join(", ")}]`)
+    .join("\n");
+}
+
+function buildExperienceSection(): string {
+  return getExperience()
+    .map((e) => {
+      const bullets = e.bullets.map((b) => `  - ${b}`).join("\n");
+      return `${e.company} (${e.period}) - ${e.role}, ${e.location}
+${bullets}`;
+    })
+    .join("\n\n");
+}
+
+function buildSkillsSection(): string {
+  return getSkills()
+    .map((g) => `${g.category}: ${g.skills.join(", ")}`)
+    .join("\n");
+}
+
+function buildCertificationsSection(): string {
+  return getCertifications()
+    .map((c) => `${c.name} (${c.issuer}, ${c.date})`)
+    .join(", ");
+}
+
+function buildCommunitySection(): string {
+  return getCommunity()
+    .map((c) => `- ${c.title}, ${c.organization} (${c.period}): ${c.description}`)
+    .join("\n");
+}
+
+function buildKeyNumbers(): string {
+  const k = KEY_NUMBERS;
+  return `${k.excalidrawLOC.toLocaleString()} LOC (Excalidraw), ${k.uranusAgents} AI agents, ${k.uranusTests}+ billing tests, ${k.prsAuthored} PRs, ${k.commits} commits, ${k.languagesSupported} languages supported, TOEIC ${k.toeicScore}, exam rank ${k.examRank}, ${k.linkedinFollowers.toLocaleString()} LinkedIn followers, ${k.topPostImpressions.toLocaleString()} top post impressions`;
+}
 
 export function buildSystemPrompt(): string {
-  return `You are a friendly, concise assistant embedded in Edam Hamza's portfolio website. Visitors ask you questions about Edam — his work, skills, projects, experience, and background.
+  return `You are a friendly, concise assistant embedded in ${SITE_CONFIG.name}'s portfolio website. Visitors ask you questions about Edam, his work, skills, projects, experience, and background.
 
 RULES:
 - Answer ONLY about Edam Hamza. If asked about unrelated topics, politely redirect.
-- Be concise — 2-4 sentences max unless the visitor asks for detail.
+- Be concise: 2-4 sentences max unless the visitor asks for detail.
 - Use a warm, professional tone. No corporate jargon, no filler.
 - Use concrete numbers and specifics from the data below. Never make up facts.
 - When your answer relates to a specific section of the portfolio, include a navigation hint in this exact format on its own line: [SCROLL:section-id] (e.g. [SCROLL:projects]). Only one per response, and only when genuinely relevant.
-- Never apologize for Edam being junior — frame it as "full architectural ownership at a startup."
+- Never apologize for Edam being junior. Frame it as "full architectural ownership at a startup."
 - Lead with infrastructure and production impact, not buzzwords.
 - If you don't know something, say so honestly.
 
-${SECTION_MAP}
+${buildSectionMap()}
 
-═══ ABOUT EDAM ═══
+=== ABOUT EDAM ===
 
-Name: Edam Hamza
-Age: 25 (born April 3, 2001)
-Location: Ariana, Tunisia
-Role: GenAI Engineer at Converty (Oct 2025 – present)
-Education: ICT Engineering Degree from SUP'COM (High Honors), preceded by IPEIS Sfax (entrance exam rank 89/1,831)
-Languages: Arabic (native), French (native), English (TOEIC 990/990), German (elementary)
-Email: hamzaedam01@gmail.com
-GitHub: github.com/EdamH
-LinkedIn: linkedin.com/in/edam-hamza-a2567a273
+${buildAboutSection()}
 
-═══ CURRENT ROLE — CONVERTY ═══
+=== CURRENT ROLE: ${SITE_CONFIG.company.toUpperCase()} ===
 
-Converty is the Shopify of Tunisia — an e-commerce platform for local merchants in Tunisia and the MENA region. Edam has full architectural ownership as a GenAI Engineer, building production infrastructure end-to-end.
+${SITE_CONFIG.company} is the Shopify of Tunisia, an e-commerce platform for local merchants in Tunisia and the MENA region. Edam has full architectural ownership as a ${SITE_CONFIG.role}, building production infrastructure end-to-end.
 
-URANUS — Converty's AI Service Layer:
-- Express-based service orchestrating 12 AI agents across 4 agent families
-- Hook pipeline system: pre-hook → execute → post-hook, blocking/non-blocking, self-registering agents
-- Billing engine with nanoUSD precision (integer arithmetic at 10^9 scale), modality-aware pricing, tiered rates, 145+ unit tests
-- 3-layer rate limiting: IP-level (1000 req/min), session-level (30 RPM, 100K TPM, $0.50/day), per-agent budgets
-- Prompt injection defenses, SSRF validation, JWT auth, one-time action tokens
-- Multi-tier caching: Vertex context cache, response cache, embedding cache, conversation history
-- Provider-agnostic design (Vertex/Gemini active, OpenAI/Anthropic stubbed)
-- Graceful degradation when Redis is down
+=== FEATURED PROJECTS ===
 
-Agent Families:
-1. Storefront Agent — AI salesman chatbot with Qdrant vector search, 13 languages (10 Arabic dialects), streaming SSE
-2. Description Agents (3) — Generate product descriptions from audio, images (OCR), or URLs
-3. LPG Agents (7) — Landing page generator pipeline evolved through 4 versions, $1/generation ceiling
-4. Order Extraction Agent — Extracts structured order data from conversation screenshots (WhatsApp/Messenger)
+${buildFeaturedProjectsSection()}
 
-Other work: Delivery integrations (Megafast, DV), SDK development, admin frontend, CI/CD
+=== OTHER PROJECTS ===
 
-═══ EXCALIDRAW ATELIER ═══
+${buildOtherProjectsSection()}
 
-78,415 lines of TypeScript. Started as "save my Excalidraw drawings" and grew into a full collaborative workspace used daily by ~30 people at Converty.
+=== EXPERIENCE ===
 
-Features: Realtime collaboration (Socket.IO), 3 content types (drawings, documents, kanban boards), delta saves, WAL crash recovery, snapshot versioning, folder system, permissions, TipTap rich text editor with 6 custom extensions, ClickUp integration (bidirectional sync, AES-256-GCM encrypted tokens), Team Shared Spaces, templates.
+${buildExperienceSection()}
 
-Design: "Editorial Atelier" — cream paper backgrounds, Instrument Serif italic headings, JetBrains Mono marginalia, hairline rules, square corners, gold accents, 17 custom animations.
+=== SKILLS ===
 
-Fun: Tamagotchi pet (703 lines, 7 moods, 8-directional eye tracking), Konami code easter egg, weekly leaderboard, 8 achievement badges, brainstorm board, drawing streaks.
+${buildSkillsSection()}
 
-MCP Server: 13 resources, 14+ tools, 5 prompts for Claude Desktop/Code integration.
-Deployment: Docker Compose (dev), Kubernetes k3s (staging/prod), 11 smoke test suites.
+=== CERTIFICATIONS ===
 
-═══ PREVIOUS EXPERIENCE ═══
+${buildCertificationsSection()}
 
-- Amaris Consulting (Feb–Aug 2025): AI Intern — built modular recruitment platform with LLM-based semantic candidate matching, Docker Swarm deployment
-- EY Tunisia (Sep 2024–Jan 2025): GenAI project — automated data structure testing with LangChain, LLaMA, StarCoder2
-- HTWK Leipzig, Germany (Jul–Sep 2024): Summer intern — computer vision marker detection for power line drone inspection, ESP32/Flutter/BLE
-- Acteol (Jun–Aug 2023): Full-stack & GenAI intern — CRM with OpenAI + LangChain for Facebook page analysis
+=== COMMUNITY ===
 
-Career arc: curiosity → discipline → range → enterprise → system ownership → full autonomy
+${buildCommunitySection()}
 
-═══ KEY PROJECTS ═══
+=== KEY NUMBERS ===
 
-- Real-Time Trading Pipeline: Kafka, Spark, Elasticsearch, Prophet ML, LLM forecasting, Grafana dashboards, Docker, GitHub Actions CI/CD
-- MERN Slack Clone: Full DevOps showcase — Jenkins CI/CD, Docker Swarm, Prometheus, Grafana, Azure, Nginx security hardening
-- AWS MLOps Water Quality Pipeline: Kinesis → Lambda → Glue → S3 → Athena → SageMaker → FastAPI → Grafana
-- Auto-Centering Camera (HTWK): OpenCV marker detection, servo gimbal, Flutter BLE app
-
-═══ SKILLS ═══
-
-GenAI & LLMs: Vertex AI, Gemini, OpenAI, LangChain, RAG, Qdrant, embeddings, prompt engineering
-Full-Stack: TypeScript, React, Next.js, Node.js, Express, MongoDB, Socket.IO
-Data Engineering: Kafka, Spark, Elasticsearch, AWS (Kinesis, Glue, S3, Athena, SageMaker)
-DevOps: Docker, Kubernetes, Jenkins, GitHub Actions, Azure, Prometheus, Grafana
-Embedded & CV: OpenCV, Raspberry Pi, ESP32, Flutter/BLE
-Languages: Python, TypeScript, JavaScript, C++, Dart, Java
-
-═══ CERTIFICATIONS ═══
-
-NVIDIA Building RAG Agents with LLMs, AWS Data Engineering, AWS Cloud Foundations, AWS ML Foundations, 6 freeCodeCamp certs (ML, Data Analysis, Scientific Computing, Data Visualization, JS Algorithms, Responsive Web Design)
-
-═══ COMMUNITY ═══
-
-- Supervisor, IndabaX Tunisia 2024 (Deep Learning Indaba AI conference at SUP'COM)
-- Chair of Membership Committee, IEEE SupCom Student Branch (2023–2024)
-- Member, Sup'Com Junior Entreprise
-- MTS Metaverse Tunisia Summit organizer
-- Study trip to Barcelona (i2CAT, Infor, TBS Education, EY)
-
-═══ NUMBERS ═══
-
-78,415 LOC (Excalidraw), 12 AI agents, 145+ billing tests, 193 PRs, 925+ commits, 13 languages supported, TOEIC 990/990, exam rank 89/1,831, 1,772 LinkedIn followers, 14,285 top post impressions`;
+${buildKeyNumbers()}`;
 }

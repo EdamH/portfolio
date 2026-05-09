@@ -69,9 +69,9 @@ function renderMarkdown(text: string): React.ReactNode[] {
 }
 
 function renderInline(text: string): React.ReactNode[] {
-  // Process: **bold**, *italic*, `code`
+  // Process: **bold**, *italic*, `code`, URLs
   const parts: React.ReactNode[] = [];
-  const re = /(\*\*(.+?)\*\*|\*(.+?)\*|`(.+?)`)/g;
+  const re = /(\*\*(.+?)\*\*|\*(.+?)\*|`(.+?)`|https?:\/\/[^\s),]+)/g;
   let lastIndex = 0;
   let match;
   let key = 0;
@@ -90,6 +90,13 @@ function renderInline(text: string): React.ReactNode[] {
         <code key={key++} className="font-mono text-accent bg-accent/10 px-1 py-0.5 text-xs">
           {match[4]}
         </code>
+      );
+    } else if (match[0].startsWith("http")) {
+      parts.push(
+        <a key={key++} href={match[0]} target="_blank" rel="noopener noreferrer"
+           className="text-accent underline underline-offset-2 hover:text-foreground transition-colors duration-300">
+          {match[0]}
+        </a>
       );
     }
 
@@ -138,6 +145,8 @@ export default function ChatBubble() {
   const [isLoading, setIsLoading] = useState(false);
   const [showScrollBtn, setShowScrollBtn] = useState(false);
   const [streamingId, setStreamingId] = useState<string | null>(null);
+  const [showTeaser, setShowTeaser] = useState(false);
+  const teaserDismissed = useRef(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
@@ -219,6 +228,24 @@ export default function ChatBubble() {
       });
     }
   }, [isOpen, isAnimating]);
+
+  // Show teaser bubble after 4 seconds (only once)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!teaserDismissed.current && !isOpen) {
+        setShowTeaser(true);
+      }
+    }, 4000);
+    return () => clearTimeout(timer);
+  }, [isOpen]);
+
+  // Dismiss teaser when chat opens
+  useEffect(() => {
+    if (isOpen && showTeaser) {
+      setShowTeaser(false);
+      teaserDismissed.current = true;
+    }
+  }, [isOpen, showTeaser]);
 
   // Escape key to close
   useEffect(() => {
@@ -417,6 +444,28 @@ export default function ChatBubble() {
 
   return (
     <>
+      {/* ═══ Teaser bubble ═══ */}
+      {showTeaser && !isOpen && (
+        <button
+          onClick={() => {
+            setShowTeaser(false);
+            teaserDismissed.current = true;
+            toggleChat();
+          }}
+          className="fixed bottom-[5.5rem] right-6 z-[9998] max-w-[200px]
+                     px-3 py-2 bg-card border border-accent/15 text-sm text-foreground
+                     shadow-md cursor-pointer
+                     animate-[fadeSlideUp_4s_cubic-bezier(0.23,1,0.32,1)_forwards]
+                     hover:border-accent/40 transition-colors duration-500
+                     max-sm:bottom-[5rem] max-sm:right-4"
+        >
+          <p className="font-mono text-xs text-accent leading-relaxed">
+            Curious about my work? Ask me anything!
+          </p>
+          <div className="absolute -bottom-1.5 right-5 w-3 h-3 bg-card border-b border-r border-accent/15 rotate-45" />
+        </button>
+      )}
+
       {/* ═══ Floating bubble ═══ */}
       <button
         onClick={toggleChat}

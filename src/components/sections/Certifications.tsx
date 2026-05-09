@@ -69,7 +69,7 @@ export default function Certifications() {
                       </p>
                     </div>
                     {cert.link && (
-                      <span className="shrink-0 text-accent md:translate-x-8 md:opacity-0 md:group-hover:translate-x-0 md:group-hover:opacity-100 transition-all duration-300">
+                      <span aria-hidden="true" className="shrink-0 text-accent md:translate-x-8 md:opacity-0 md:group-hover:translate-x-0 md:group-hover:opacity-100 transition-all duration-300">
                         <ExternalLinkIcon size={18} />
                       </span>
                     )}
