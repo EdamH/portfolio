@@ -4,6 +4,7 @@ import "./globals.css";
 import { SITE_CONFIG } from "@/lib/constants";
 import Nav from "@/components/Nav";
 import ChatBubble from "@/components/ui/ChatBubble";
+import { Analytics } from "@vercel/analytics/next";
 
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
@@ -89,6 +90,7 @@ export default function RootLayout({
         <Nav />
         {children}
         <ChatBubble />
+        <Analytics />
       </body>
     </html>
   );
