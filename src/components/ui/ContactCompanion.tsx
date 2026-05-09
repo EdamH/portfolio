@@ -210,7 +210,7 @@ function usePetAnimation(mood: Mood) {
   const faces = MOOD_FACES[mood];
   const [face, setFace] = useState(faces.base);
   const sequenceRef = useRef(false);
-  const timerRef = useRef<ReturnType<typeof setTimeout>>();
+  const timerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   useEffect(() => {
     function scheduleNext() {

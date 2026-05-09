@@ -57,7 +57,7 @@ export default function Certifications() {
               >
                 <div className="overflow-hidden">
                   <Wrapper
-                    {...(wrapperProps as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
+                    {...(wrapperProps as React.HTMLAttributes<HTMLElement>)}
                     className="bg-card border border-card-border px-4 py-3 hover:bg-card-hover transition-colors duration-300 flex items-center gap-3 group overflow-hidden"
                   >
                     <div className="flex-1 min-w-0">
