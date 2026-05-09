@@ -39,7 +39,7 @@ Location: Ariana, Tunisia
 Role: GenAI Engineer at Converty (Oct 2025 – present)
 Education: ICT Engineering Degree from SUP'COM (High Honors), preceded by IPEIS Sfax (entrance exam rank 89/1,831)
 Languages: Arabic (native), French (native), English (TOEIC 990/990), German (elementary)
-Email: edam.hamza@supcom.tn
+Email: hamzaedam01@gmail.com
 GitHub: github.com/EdamH
 LinkedIn: linkedin.com/in/edam-hamza-a2567a273
 

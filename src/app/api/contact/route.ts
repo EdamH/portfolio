@@ -4,7 +4,7 @@ import { Resend } from "resend";
 function getResend() {
   return new Resend(process.env.RESEND_API_KEY);
 }
-const CONTACT_EMAIL = process.env.CONTACT_EMAIL || "edam.hamza@supcom.tn";
+const CONTACT_EMAIL = process.env.CONTACT_EMAIL || "hamzaedam01@gmail.com";
 
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
 const RATE_LIMIT = 3;

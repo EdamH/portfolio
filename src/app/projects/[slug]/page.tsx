@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { getFeaturedProjects, getProjectBySlug } from "@/lib/data";
 import { PROJECT_DETAILS } from "@/lib/project-details";
 import { GitHubIcon, ArrowLeftIcon } from "@/components/ui/Icons";
@@ -117,10 +118,15 @@ export default async function ProjectPage({ params }: Props) {
                     className={`border border-card-border bg-card overflow-hidden ${(shot.span ?? "half") === "full" ? "md:col-span-2" : ""}`}
                   >
                     <div className="relative aspect-video bg-surface saturate-[0.80]">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
+                      <Image
                         src={shot.src}
                         alt={shot.alt}
+                        fill
+                        sizes={
+                          (shot.span ?? "half") === "full"
+                            ? "100vw"
+                            : "(max-width: 768px) 100vw, 50vw"
+                        }
                         className="w-full h-full"
                         style={{ objectFit: shot.fit ?? "cover" }}
                       />

@@ -1,0 +1,16 @@
+{
+  "name": "Edam Hamza — GenAI Engineer",
+  "short_name": "Edam Hamza",
+  "description": "Full-stack GenAI engineer building production AI systems.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#c8a86e",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    }
+  ]
+}

@@ -159,7 +159,7 @@ export function getFeaturedProjects(): Project[] {
       ],
       link: "https://github.com/EdamH/REAL-TIME-TRADING-DATA-FORECAST-LLM-GRAFANA",
       collaborator: "Habib Kammoun",
-      collaboratorUrl: "https://www.linkedin.com/in/habib-kammoun/",
+      collaboratorUrl: "https://github.com/habibkammoun",
       featured: true,
       visualOpportunity: "Grafana dashboard screenshots, architecture diagram",
     },
@@ -227,7 +227,7 @@ export function getOtherProjects(): Project[] {
       tech: ["AWS", "Kinesis", "SageMaker", "FastAPI", "Grafana"],
       link: "https://github.com/EdamH/AWS-MLOPS-WATER-QUALITY-INDEX-FORECAST-VISUALIZE-GRAFANA-GENAI-GPT2",
       collaborator: "Farah Elloumi",
-      collaboratorUrl: "https://www.linkedin.com/in/farah-elloumi/",
+      collaboratorUrl: "https://github.com/faraheloumi",
       featured: false,
     },
     {
@@ -241,7 +241,7 @@ export function getOtherProjects(): Project[] {
       tech: ["LangChain", "LLaMA", "StarCoder2", "Python"],
       link: "https://github.com/EdamH/DATA-DEFINITION-LANGUAGE-OPTIMIZATION-GENAI-LANGCHAIN",
       collaborator: "Farah Elloumi",
-      collaboratorUrl: "https://www.linkedin.com/in/farah-elloumi/",
+      collaboratorUrl: "https://github.com/faraheloumi",
       featured: false,
     },
     {
@@ -266,8 +266,6 @@ export function getOtherProjects(): Project[] {
       highlights: [],
       tech: ["MERN", "Docker Swarm", "Jenkins", "Prometheus", "Azure"],
       link: "https://github.com/EdamH/MERN-SLACK-CLONE-CICD-DOCKER-SWARM",
-      collaborator: "Skander Chayoukhi",
-      collaboratorUrl: "https://www.linkedin.com/in/skander-chayoukhi/",
       featured: false,
     },
     {
@@ -291,6 +289,8 @@ export function getOtherProjects(): Project[] {
       highlights: [],
       tech: ["Kafka", "Spark", "Elasticsearch", "Azure"],
       link: "https://github.com/EdamH/REAL-TIME-FLIGHT-DATA-CICD-PIPELINE",
+      collaborator: "Anas Ben Amor",
+      collaboratorUrl: "https://github.com/AnasBenAmor10",
       featured: false,
     },
     {
@@ -623,7 +623,7 @@ export function getCommunity(): CommunityItem[] {
       organization: "SUP'COM",
       description:
         "Visited i2CAT Research Centre, Infor, TBS Education Barcelona, and EY.",
-      photo: "/studyTrip_O2.jpg",
+      photo: "/studytrip_O2.jpg",
       period: "June 2024",
     },
   ];

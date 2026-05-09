@@ -93,18 +93,18 @@ export const PROJECT_DETAILS: Record<string, ProjectDetail> = {
   "excalidraw-atelier": {
     screenshots: [
       { 
-        src: "/projects/atelier/atelier-home.png", 
+        src: "/projects/Atelier/atelier-home.png", 
         alt: "Excalidraw Atelier drawing editor", 
         caption: "Drawing editor with Editorial Atelier design language", 
         span: "full"
       },
       { 
-        src: "/projects/atelier/atelier-docs.png", 
+        src: "/projects/Atelier/atelier-docs.png", 
         alt: "Excalidraw Atelier document editor", 
         caption: "TipTap document editor with custom extensions, powering a docs interface" 
       },
       { 
-        src: "/projects/atelier/atelier-kanban.png", 
+        src: "/projects/Atelier/atelier-kanban.png", 
         alt: "Excalidraw Atelier kanban board", 
         caption: "Kanban board with priorities, dependencies, and analytics" 
       },

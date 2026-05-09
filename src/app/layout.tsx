@@ -28,6 +28,11 @@ export const metadata: Metadata = {
   title: SITE_CONFIG.title,
   description: SITE_CONFIG.description,
   metadataBase: new URL(SITE_CONFIG.url),
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
+  manifest: "/manifest.json",
   openGraph: {
     title: SITE_CONFIG.title,
     description: SITE_CONFIG.description,

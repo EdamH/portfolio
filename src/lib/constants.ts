@@ -6,7 +6,7 @@ export const SITE_CONFIG = {
   description:
     "Full-stack GenAI engineer building production AI systems. 12 AI agents, 78K LOC collaborative tools, and end-to-end infrastructure — from model layer to deployment.",
   url: "https://edamhamza.dev",
-  email: "edam.hamza@supcom.tn",
+  email: "hamzaedam01@gmail.com",
   birthdate: "2001-04-03",
   location: "Ariana, Tunisia",
   role: "GenAI Engineer",
@@ -38,7 +38,7 @@ export const SOCIAL_LINKS: SocialLink[] = [
   },
   {
     platform: "Email",
-    url: "mailto:edam.hamza@supcom.tn",
+    url: "mailto:hamzaedam01@gmail.com",
     label: "Send Email",
   },
 ];
