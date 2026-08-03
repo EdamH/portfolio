@@ -340,13 +340,13 @@ type Command = (typeof VALID_COMMANDS)[number];
 
 const HELP_LINES: TerminalLine[] = [
   { text: "available commands:", type: "accent" },
-  { text: "  /feed    — feed the companion", type: "dim" },
-  { text: "  /splash  — give it a bath", type: "dim" },
-  { text: "  /bonk    — bonk it (not recommended)", type: "dim" },
-  { text: "  /pet     — pet the companion", type: "dim" },
-  { text: "  /pets    — show pet counter", type: "dim" },
-  { text: "  /clear   — clear terminal", type: "dim" },
-  { text: "  /help    — show this message", type: "dim" },
+  { text: "  /feed    -  feed the companion", type: "dim" },
+  { text: "  /splash  -  give it a bath", type: "dim" },
+  { text: "  /bonk    -  bonk it (not recommended)", type: "dim" },
+  { text: "  /pet     -  pet the companion", type: "dim" },
+  { text: "  /pets    -  show pet counter", type: "dim" },
+  { text: "  /clear   -  clear terminal", type: "dim" },
+  { text: "  /help    -  show this message", type: "dim" },
 ];
 
 interface ContactCompanionProps {
@@ -715,7 +715,7 @@ export default function ContactCompanion({
           className="ml-3 text-[11px] font-mono tracking-wide flex-1"
           style={{ color: "var(--terminal-dim)" }}
         >
-          excalidraw-persistence — spawn_companion.sh
+          excalidraw-persistence · spawn_companion.sh
         </span>
         {petCount > 0 && (
           <span

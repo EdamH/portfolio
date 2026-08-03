@@ -22,7 +22,7 @@ const BOOT_SCRIPT: BootLine[] = [
   { text: "Last login: Fri Apr 25 2026 from 10.0.0.1", type: "dim", delay: 300 },
   { text: "", type: "dim", delay: 100 },
   { text: "  ╔══════════════════════════════════════╗", type: "banner", delay: 100 },
-  { text: "  ║   EDAM HAMZA — Portfolio v2.0        ║", type: "banner", delay: 80 },
+  { text: "  ║   EDAM HAMZA · Portfolio v2.0        ║", type: "banner", delay: 80 },
   { text: "  ╚══════════════════════════════════════╝", type: "banner", delay: 80 },
   { text: "", type: "dim", delay: 400 },
   { text: "$ npm test", type: "command", delay: 200, typing: true },
@@ -32,7 +32,7 @@ const BOOT_SCRIPT: BootLine[] = [
   { text: "✓ Claude contribution hidden. Shhhhhh.", type: "success", delay: 200 },
   { text: "", type: "dim", delay: 400 },
   { text: "$ systemctl status portfolio", type: "command", delay: 200, typing: true },
-  { text: "● portfolio.service — active (running)", type: "accent", delay: 500 },
+  { text: "● portfolio.service · active (running)", type: "accent", delay: 500 },
   { text: "  ├── hero .................. loaded", type: "info", delay: 120 },
   { text: "  ├── about ................. loaded", type: "info", delay: 120 },
   { text: "  ├── projects .............. loaded", type: "info", delay: 120 },
@@ -258,7 +258,7 @@ export default function BootSequence({ onComplete }: BootSequenceProps) {
           <span className="w-3 h-3 rounded-full bg-[#febc2e]" />
           <span className="w-3 h-3 rounded-full bg-[#28c840]" />
           <span className="ml-3 text-[11px] font-mono tracking-wide text-neutral-600">
-            edam@portfolio — boot
+            edam@portfolio · boot
           </span>
         </div>
 

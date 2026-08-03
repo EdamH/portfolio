@@ -49,6 +49,7 @@ export const PROJECT_DETAILS: Record<string, ProjectDetail> = {
       "URANUS is the AI backbone of Converty. Not a single chatbot , it's the foundational infrastructure that all current and future AI integrations at Converty run on. Every agent inherits production-grade billing, security, rate limiting, and caching from the core.",
       "The core contribution isn't any single agent , it's the platform-level infrastructure. New agents self-register via registerAgent() and inherit the full hook pipeline, billing engine, and security stack. No central wiring needed. Adding a new provider means installing an SDK package and uncommenting one line.",
       "All costs are computed in nanoUSD , integer arithmetic at 10^9 scale , to eliminate floating-point accumulation errors. Preflight estimation uses script-aware heuristics (Latin ~4 chars/token, Arabic/CJK ~1.5), and post-flight reconciliation corrects drift via atomic Redis Lua scripts.",
+      "Spending runs through a credit ledger with a reserve, settle, void lifecycle. Every run reserves credits atomically , the store balance and the ledger row move together inside one MongoDB transaction , then settles in-band with its own product write so the two commit as a single unit. If a run stalls or the process dies mid-flight, a recovery cron sweeps every 30 seconds and refunds the reservation, with claim-first arbitration guaranteeing a run can never be double-refunded. Usage rolls up into per-store invoices broken down by agent, model, and modality.",
       "The system has made it trivial so far for us, at Converty, to add AI features at will. Only 1 month since its inception, it has already powered 12 agents across 4 families, with more in development. The unified runner/hook pipeline means every agent benefits from the same security, billing, and rate limiting features without extra work , a force multiplier for our AI development velocity.",
       "The whole system is deployed on a Kubernetes cluster (k3s). Startup, readiness, and liveness probes ensure zero-downtime deploys. Resource limits and security hardening are baked into the deployment manifests, not bolted on after the fact.",
       "If you'd like to see more of it in action, check out Converty's Platform. If it's AI-powered, chances are it's running on URANUS.",
@@ -68,6 +69,7 @@ export const PROJECT_DETAILS: Record<string, ProjectDetail> = {
           { id: "ratelimit", label: "Rate Limiting", detail: "3 layers · IP (1000/min) · Session (30 RPM, $0.50/day) · Per-agent budgets" },
           { id: "caching", label: "Caching", detail: "4 tiers · Vertex context cache · Response cache · Embedding cache · Conversation state" },
           { id: "billing", label: "Billing", detail: "nanoUSD precision (10^9 scale) · Modality-aware pricing · 145+ unit tests · Drift reconciliation" },
+          { id: "ledger", label: "Credit Ledger", detail: "Reserve → settle → void · Atomic balance + ledger row in one transaction · 30s recovery cron auto-refunds stalled runs · Per-store invoices" },
           { id: "resilience", label: "Resilience", detail: "Redis graceful degradation · Stream disconnect detection · RabbitMQ async persistence" },
         ],
       },
@@ -84,7 +86,7 @@ export const PROJECT_DETAILS: Record<string, ProjectDetail> = {
         nodes: [
           { id: "storefront", label: "Storefront (1)", detail: "AI Salesman · 13 languages incl. 10 Arabic dialects · 8 tools · Qdrant vector search" },
           { id: "description", label: "Description (3)", detail: "Audio → description · Image OCR → description · URL analysis → description" },
-          { id: "lpg", label: "LPG (7)", detail: "Photo → landing page pipeline · Skeleton → Visuals → HTML · 4 version evolution" },
+          { id: "lpg", label: "LPG (7)", detail: "Product photos → landing page creative · Skeleton → image generation → stitch · quick-shot, editorial, and creative modes" },
           { id: "order", label: "Order (1)", detail: "Screenshot → structured order · Gemini Vision · Confidence-scored catalog matching" },
         ],
       },
@@ -155,6 +157,87 @@ export const PROJECT_DETAILS: Record<string, ProjectDetail> = {
           { id: "mongo", label: "MongoDB", detail: "Replica set · Scenes, users, activity log · 90-day TTL auto-expire" },
           { id: "k8s", label: "Kubernetes", detail: "k3s · PodDisruptionBudget · Startup/readiness/liveness probes · Resource limits" },
           { id: "ci", label: "CI/CD", detail: "11 smoke test suites · GitHub Actions on self-hosted runner · Docker Compose for dev" },
+        ],
+      },
+    ],
+  },
+
+  lpg: {
+    screenshots: [
+      {
+        src: "/projects/URANUS/lpg-config.png",
+        alt: "Landing Page Generator configuration form",
+        caption: "LPG configuration form , product input, market, and creative mode",
+        span: "full",
+      },
+    ],
+    narrative: [
+      "The Landing Page Generator answers one question for a Converty seller: I have a product, now give me something that sells it. A few product photos go in, a finished landing page creative comes out. No templates to wrestle with, no designer to brief.",
+      "It is live in production. In its first month it drove over 1,000 generations as a new paid feature sellers pay to use.",
+      "The output is an image, not code. Rather than assemble HTML, the pipeline drives image-generation models (Gemini 3 Pro Image, with an optional OpenAI path) to render the landing page directly as a polished visual creative, exported as WebP for display with lossless PNG masters kept for clean regeneration.",
+      "Under the hood it is a multi-agent pipeline, not a single prompt. A skeleton agent turns the product input into a structured page layout, then image agents render that layout: either section by section with a hero-anchored style, or as a single full-page shot for the faster modes. Sharp stitches the pieces into one tall creative.",
+      "There are three live modes, each a different creative posture: a quick-shot single-pass mode for fast, conversion-first creatives, an editorial mode for a more designed look, and a section-by-section creative-director mode for maximum control. None is a legacy fallback , sellers pick the voice that fits the product.",
+      "Copy is dialect-aware. Arabic rendered into the creative follows per-market conventions: Maghreb and Modern Standard markets get Western numerals, Mashreq and Egyptian markets get Eastern Arabic numerals, and Latin proper nouns are preserved rather than transliterated. A creative for a Tunisian store reads like it was written in Tunis, not machine-translated.",
+      "The pipeline runs on the URANUS infrastructure, so it inherits billing, rate limiting, caching, and security for free. Every generation is metered in credits against the seller's balance, reserved before the run and settled when the final image lands.",
+    ],
+    architecture: [
+      {
+        title: "Input",
+        nodes: [
+          { id: "product", label: "Product Input", detail: "Single product , name, description, images , as the only required input" },
+          { id: "mode", label: "Creative Mode", detail: "3 live modes · V3 quick-shot · Editorial · V1 creative · Market + dialect selection" },
+        ],
+      },
+      {
+        title: "Generation Pipeline",
+        nodes: [
+          { id: "skeleton", label: "Skeleton", detail: "Product photos → structured page layout · Gemini 3 Flash · Section planning · Dialect-aware copy rules" },
+          { id: "image", label: "Image Generation", detail: "Gemini 3 Pro Image · Section-by-section or single full-page · Hero-anchored style · Optional OpenAI path" },
+          { id: "stitch", label: "Stitch & Export", detail: "Sharp vertical stitching · WebP creative + PNG master + thumbnail · CDN upload · Per-section regeneration" },
+        ],
+      },
+      {
+        title: "Inherited from URANUS",
+        nodes: [
+          { id: "billing", label: "Billing", detail: "nanoUSD per-request costing · Per-session budgets · Per-agent budget caps" },
+          { id: "ratelimit", label: "Rate Limiting", detail: "IP + session limits · Pre-hook policy and rate limit guards" },
+          { id: "caching", label: "Caching", detail: "Vertex context cache · Response cache · Embedding cache" },
+          { id: "security", label: "Security", detail: "Prompt injection defense · SSRF hardening · Data-only sandboxing for seller content" },
+        ],
+      },
+    ],
+  },
+
+  "converty-mcp": {
+    narrative: [
+      "The Converty MCP Server brings a seller's store into the chat. It is a Model Context Protocol server that lets an AI assistant read and manage a Converty store , orders, products, categories, statistics, and store settings , through a safe, well-scoped surface.",
+      "Every session is scoped to a single authenticated store. The assistant never passes a store id and can never reach across tenants: the OAuth service resolves identity once, and every tool call inherits that boundary. One store per session, no exceptions.",
+      "All data is sourced through the OAuth service, not the database. The MCP is a consumer of one served surface, with no direct DB coupling. When a tool needs a field the served surface does not expose yet, the fix lives in oauth's response, not in a patch inside the MCP. That keeps the boundary honest and the blast radius small.",
+      "Access is scoped per tool. Each tool declares the OAuth scope it needs, and if the seller did not grant it, the tool surfaces a clear insufficient-permission error naming the missing scope instead of failing silently or leaking data. The assistant tells the seller exactly what to grant.",
+      "Staff management is read-only by design. Create, update, and delete on staff were deliberately removed from the OAuth and MCP surface: unbounded staff permissions were a privilege-escalation path, so the MCP can read the staff roster but never mutate it. Some doors stay closed on purpose.",
+    ],
+    architecture: [
+      {
+        title: "AI Assistant",
+        nodes: [
+          { id: "mcp", label: "MCP Transport", detail: "Model Context Protocol · Tool discovery · One store per session · No store id passed by the client" },
+        ],
+      },
+      {
+        title: "Access Control",
+        nodes: [
+          { id: "oauth", label: "OAuth Scoping", detail: "Identity resolved once · Single authenticated store · Per-tool scope requirements" },
+          { id: "perms", label: "Permission Surfacing", detail: "Insufficient-permission errors name the missing scope · No silent failure · No data leak" },
+          { id: "readonly", label: "Read-only Staff", detail: "Staff create/update/delete removed · Privilege-escalation boundary · Read-only roster" },
+        ],
+      },
+      {
+        title: "Served Surface , via OAuth",
+        nodes: [
+          { id: "orders", label: "Orders", detail: "List, read, and manage orders · Status vocabulary · Reference vs internal id" },
+          { id: "products", label: "Products & Categories", detail: "Catalog items, stock, variants, bundles · Category tree" },
+          { id: "stats", label: "Statistics", detail: "Store performance · Custom breakdowns · Aggregated metrics" },
+          { id: "settings", label: "Store Settings", detail: "Store info · Configuration · Currency and delivery context" },
         ],
       },
     ],

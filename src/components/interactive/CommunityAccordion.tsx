@@ -44,7 +44,7 @@ export default function CommunityAccordion({ items }: { items: CommunityItem[] }
                   {item.title}
                 </h3>
                 <span className="text-muted text-sm hidden sm:block">
-                  — {item.organization}
+                  · {item.organization}
                 </span>
               </div>
               <div className="flex items-center gap-4 shrink-0">

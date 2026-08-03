@@ -7,6 +7,7 @@ import { PROJECT_DETAILS } from "@/lib/project-details";
 import { GitHubIcon, ArrowLeftIcon } from "@/components/ui/Icons";
 import ProjectArchitecture from "@/components/interactive/ProjectArchitecture";
 import PageReveal from "@/components/ui/PageReveal";
+import { SITE_CONFIG } from "@/lib/constants";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -20,9 +21,35 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const project = getProjectBySlug(slug);
   if (!project) return {};
+
+  const title = `${project.title} · ${project.subtitle}`;
+  const canonical = `/projects/${slug}`;
+
   return {
-    title: `${project.title} — Edam Hamza`,
+    title,
     description: project.description,
+    keywords: [
+      "Edam Hamza",
+      `${project.title} Edam Hamza`,
+      project.title,
+      project.subtitle,
+      ...project.tech,
+    ],
+    alternates: {
+      canonical,
+    },
+    openGraph: {
+      title: `${title} · Edam Hamza`,
+      description: project.description,
+      url: canonical,
+      siteName: "Edam Hamza",
+      type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${title} · Edam Hamza`,
+      description: project.description,
+    },
   };
 }
 
@@ -36,8 +63,57 @@ export default async function ProjectPage({ params }: Props) {
   const currentIndex = allProjects.findIndex((p) => p.slug === slug);
   const nextProject = allProjects[(currentIndex + 1) % allProjects.length];
 
+  const projectJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    name: project.title,
+    headline: `${project.title} · ${project.subtitle}`,
+    description: project.description,
+    url: `${SITE_CONFIG.url}/projects/${slug}`,
+    keywords: project.tech.join(", "),
+    author: {
+      "@type": "Person",
+      name: "Edam Hamza",
+      url: SITE_CONFIG.url,
+    },
+    ...(project.link ? { sameAs: project.link } : {}),
+  };
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Edam Hamza",
+        item: SITE_CONFIG.url,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Projects",
+        item: `${SITE_CONFIG.url}/#projects`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: project.title,
+        item: `${SITE_CONFIG.url}/projects/${slug}`,
+      },
+    ],
+  };
+
   return (
     <PageReveal>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(projectJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
       <main className="min-h-screen pt-20 pb-24">
         <div className="max-w-4xl mx-auto px-6">
           {/* Back link */}

@@ -61,7 +61,7 @@ export default async function About() {
               <div className="relative w-24 h-24 md:w-34 md:h-34 shrink-0 overflow-hidden border border-border group/photo">
                 <Image
                   src="/headshot.jpg"
-                  alt="Edam Hamza"
+                  alt="Edam Hamza, GenAI engineer based in Ariana, Tunisia"
                   width={500}
                   height={500}
                   className="object-cover w-full h-full transition-all duration-500 saturate-[0.8] brightness-[1.05] contrast-[1.05] group-hover/photo:saturate-100 group-hover/photo:brightness-100 group-hover/photo:contrast-100"
@@ -102,7 +102,7 @@ export default async function About() {
 
             {/* Bio */}
             <p className="text-muted leading-relaxed text-base">
-              I build systems end-to-end&nbsp;&mdash; from the model layer to
+              I build systems end-to-end, from the model layer to
               the infrastructure it runs on. My work spans generative AI,
               full-stack development, data engineering, DevOps, and embedded
               systems. Not because I hop between fields, but because the best
@@ -150,7 +150,7 @@ export default async function About() {
                     </div>
                     <p className="mt-1 text-muted text-sm">
                       {edu.degree}{" "}
-                      &mdash;{" "}
+                      &middot;{" "}
                       <span
                         className={
                           edu.highlightDistinction

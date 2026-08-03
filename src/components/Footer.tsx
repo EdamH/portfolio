@@ -15,7 +15,7 @@ export default function Footer() {
               {SITE_CONFIG.name}
             </h2>
             <p className="font-mono text-xs text-muted tracking-wide uppercase">
-              {SITE_CONFIG.role} — {SITE_CONFIG.location}
+              {SITE_CONFIG.role} · {SITE_CONFIG.location}
             </p>
             <p className="text-sm text-muted/70 max-w-xs leading-relaxed">
               Building production AI systems with full architectural ownership,

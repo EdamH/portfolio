@@ -2,9 +2,9 @@ import type { SocialLink } from "./types";
 
 export const SITE_CONFIG = {
   name: "Edam Hamza",
-  title: "Edam Hamza — GenAI Engineer",
+  title: "Edam Hamza · GenAI Engineer",
   description:
-    "Full-stack GenAI engineer building production AI systems. 12 AI agents, 78K LOC collaborative tools, and end-to-end infrastructure — from model layer to deployment.",
+    "Full-stack GenAI engineer building production AI systems. 12 AI agents, 78K LOC collaborative tools, and end-to-end infrastructure, from model layer to deployment.",
   url: "https://edamhamza.dev",
   email: "hamzaedam01@gmail.com",
   birthdate: "2001-04-03",
@@ -46,6 +46,7 @@ export const SOCIAL_LINKS: SocialLink[] = [
 export const NAV_ITEMS = [
   { label: "About", href: "#about" },
   { label: "Projects", href: "#projects" },
+  { label: "Services", href: "#services" },
   { label: "Experience", href: "#experience" },
   { label: "Skills", href: "#skills" },
   { label: "Contact", href: "#contact" },

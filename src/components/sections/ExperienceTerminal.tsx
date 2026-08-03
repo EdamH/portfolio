@@ -258,8 +258,8 @@ export default function ExperienceTerminal() {
                   <div className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
                 </div>
                 <span className="font-mono text-[11px] text-terminal-dim flex-1 text-center -ml-12">
-                  career-arc &mdash;{" "}
-                  {experience[activeItemIndex].company.toLowerCase()} &mdash;
+                  career-arc &middot;{" "}
+                  {experience[activeItemIndex].company.toLowerCase()} &middot;
                   zsh
                 </span>
               </div>

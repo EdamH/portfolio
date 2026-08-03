@@ -556,7 +556,7 @@ export default function ChatBubble() {
               {messages.length === 0 && (
                 <div className="space-y-3 pt-2">
                   <p className="text-sm text-muted">
-                    Hey! Ask me anything about Edam — his work, projects, or
+                    Hey! Ask me anything about Edam, his work, projects, or
                     skills.
                   </p>
                   <div className="flex flex-wrap gap-2">

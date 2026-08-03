@@ -4,6 +4,7 @@ import type {
   Education,
   Certification,
   SkillGroup,
+  Service,
   CommunityItem,
   Language,
   AboutData,
@@ -16,24 +17,24 @@ export function getFeaturedProjects(): Project[] {
       title: "URANUS",
       subtitle: "AI Provider Agnostic Infrastructure Layer",
       description:
-        "The AI backbone of Converty. A production AI infrastructure layer with 12 agents across 4 families, orchestrated through a unified runner/hook pipeline with billing, security, rate limiting, and caching built into the core.",
+        "The AI backbone of Converty. A provider-agnostic AI infrastructure layer where any agent, provider, or model plugs into one runner and hook pipeline, and every feature inherits a credit ledger, nanoUSD billing, security, rate limiting, and caching from the core.",
       angle:
-        "Not just a chatbot. A production AI infrastructure layer with 12 agents, nanoUSD billing, 3-layer rate limiting, and provider-agnostic architecture. Built from scratch with full architectural ownership.",
+        "One infra layer, any agent, any provider, any model. URANUS is the platform every Converty AI feature plugs into: a unified runner and hook pipeline where each agent inherits a credit ledger, nanoUSD billing, multi-layer rate limiting, and caching from the core. Built from scratch with full architectural ownership.",
       stats: [
         { value: "12", label: "AI agents" },
         { value: "145+", label: "unit tests" },
-        { value: "13", label: "languages" },
         { value: "4", label: "agent families" },
+        { value: "2", label: "live providers" },
       ],
       highlights: [
-        "12 agents across 4 families (Storefront, Description, LPG, Order Extraction)",
-        "Hook pipeline system: pre-hook → execute → post-hook with blocking/non-blocking modes",
-        "nanoUSD billing engine: integer arithmetic at 10^9 scale, 145+ unit tests",
-        "3-layer rate limiting: IP (1000 req/min), session (30 RPM, $0.50/day), per-agent budgets",
-        "13 languages supported including 10 Arabic dialects (Tunisian, Egyptian, Levantine, Gulf)",
-        "Provider-agnostic design. Vertex AI active, OpenAI and Anthropic stubbed and ready",
-        "Prompt injection defenses, SSRF hardening, JWT auth with Redis invalidation",
-        "Multi-tier caching: Vertex context cache, response cache, embedding cache",
+        "12 agents across 4 families (Storefront, Description, LPG, Order Extraction), each self-registering into one runner and hook pipeline",
+        "Provider and model agnostic: agents run on any provider through the Vercel AI SDK. Vertex AI and OpenAI live, adding another is an SDK install plus a line",
+        "Credit ledger with a reserve, settle, void model: each run is reserved atomically, settled in-band with its own product write, and auto-refunded by a 30-second recovery cron if it stalls",
+        "Balance and ledger row move together in a single MongoDB transaction, with claim-first arbitration so a run can never double-refund",
+        "nanoUSD billing engine: integer cost accounting at 10^9 scale with pre-flight estimation and post-flight reconciliation, 145+ unit tests",
+        "Hook pipeline: pre-hook → execute → post-hook with blocking and non-blocking modes, reused by every billable feature",
+        "Multi-layer rate limiting and budgets: IP, per-session, and per-store quotas in Redis",
+        "Prompt injection defenses, SSRF hardening, JWT auth with Redis invalidation, multi-tier caching (context, response, embedding)",
         "Deployed on Kubernetes (k3s) with startup/readiness/liveness probes, resource limits, and security hardening",
       ],
       tech: [
@@ -59,11 +60,11 @@ export function getFeaturedProjects(): Project[] {
       description:
         "The customer-facing AI salesman powering every Converty store. Chosen here to represent the many agents I've built at Converty, from product description generators to order extractors to landing page pipelines. This one showcases the full stack: vector search, tool orchestration, multilingual support, and real-time streaming.",
       angle:
-        "Not a demo chatbot. A production shopping assistant with 8 tools, 13 languages, vector search, and cart management. Representative of all 12 agents built on the URANUS platform.",
+        "A production shopping assistant that has handled 60,000+ real customer conversations, answering shoppers in their own dialect and turning browsers into orders around the clock. One of 12 agents built on the URANUS platform.",
       stats: [
+        { value: "60K+", label: "conversations" },
         { value: "8", label: "tools" },
         { value: "13", label: "languages" },
-        { value: "384", label: "token cap" },
         { value: "10", label: "Arabic dialects" },
       ],
       highlights: [
@@ -89,6 +90,65 @@ export function getFeaturedProjects(): Project[] {
       featured: true,
       visualOpportunity:
         "Live chat demo, tool call flow visualization",
+    },
+    {
+      slug: "lpg",
+      title: "Landing Page Generator",
+      subtitle: "AI Landing Page Pipeline",
+      description:
+        "Turn a few product photos into a finished, ready-to-sell landing page creative. A multi-agent AI image pipeline live in production on Converty, driving 1,000+ generations in its first month as a new paid, revenue-generating feature.",
+      angle:
+        "Live on Converty, the Landing Page Generator turns a handful of product photos into a polished, ready-to-sell landing page creative. In a single month it produced 1,000+ generations as a paid feature sellers adopted. A multi-agent image pipeline with three distinct creative modes.",
+      stats: [
+        { value: "Paid", label: "revenue feature" },
+        { value: "1,000+", label: "generations" },
+        { value: "7", label: "specialized agents" },
+        { value: "3", label: "creative modes" },
+      ],
+      highlights: [
+        "Live in production: 1,000+ landing page creatives generated in its first month as a new paid, revenue-generating feature",
+        "Multi-agent pipeline: product photos, an AI-generated page skeleton, image generation, then a single stitched full-page creative",
+        "Outputs polished image creatives (WebP) straight from Gemini 3 Pro Image, ready to publish or run as ads",
+        "Three live modes: quick-shot single-pass, editorial, and section-by-section creative direction",
+        "Dialect-aware Arabic copy rendered into the visuals, with per-market numeral and proper-noun conventions",
+        "Runs on the URANUS infrastructure, inheriting billing, rate limiting, caching, and security",
+      ],
+      tech: [
+        "Vertex AI",
+        "Gemini 3 Pro Image",
+        "Sharp",
+        "TypeScript",
+        "MongoDB",
+        "Redis",
+      ],
+      featured: true,
+      visualOpportunity:
+        "The 3 creative modes side by side: product photos in, finished landing page creative out",
+    },
+    {
+      slug: "converty-mcp",
+      title: "Converty MCP Server",
+      subtitle: "Seller-Facing Model Context Protocol Server",
+      description:
+        "An MCP server that exposes Converty's seller platform to AI assistants (orders, products, categories, statistics, and store settings), all scoped to the authenticated store through the OAuth service.",
+      angle:
+        "Bring the store into the chat. A seller-facing MCP server that lets AI assistants read and manage a Converty store safely, sourcing every field through the OAuth service, with per-tool scopes and strict single-store isolation.",
+      stats: [
+        { value: "OAuth", label: "scoped access" },
+        { value: "5", label: "data domains" },
+        { value: "1", label: "store per session" },
+      ],
+      highlights: [
+        "Seller-facing MCP server scoped to a single authenticated store per session",
+        "All data sourced through the OAuth service. One served surface, no direct DB coupling",
+        "Per-tool OAuth scopes with explicit insufficient-permission surfacing",
+        "Read-only staff boundary to prevent privilege escalation",
+        "Exposes orders, products, categories, statistics, and store settings to AI assistants",
+      ],
+      tech: ["MCP", "TypeScript", "OAuth", "Node.js", "MongoDB", "Zod"],
+      featured: true,
+      visualOpportunity:
+        "MCP tool call flow: AI assistant → OAuth-scoped tool → store data",
     },
     {
       slug: "excalidraw-atelier",
@@ -128,6 +188,30 @@ export function getFeaturedProjects(): Project[] {
       featured: true,
       visualOpportunity:
         "Screenshots of the Editorial Atelier UI, before/after evolution",
+    },
+    {
+      slug: "store-analytics",
+      title: "Store Traffic Analytics",
+      subtitle: "ClickHouse Data Warehouse, Converty",
+      description:
+        "Real-time store analytics built on ClickHouse. RabbitMQ ingestion feeds a multi-stage aggregation pipeline (event, session, daily, per-metric) across 7 materialized views, powering traffic, retention, conversion, and device breakdowns for every store.",
+      angle:
+        "A production data-engineering system, not a notebook. ClickHouse-backed analytics with RabbitMQ ingestion and a 7-view materialized aggregation pipeline, giving every seller real-time traffic, retention, and conversion insight.",
+      stats: [
+        { value: "7", label: "materialized views" },
+        { value: "4", label: "metric domains" },
+        { value: "Real-time", label: "ingestion" },
+      ],
+      highlights: [
+        "ClickHouse data warehouse with RabbitMQ real-time event ingestion",
+        "Multi-stage aggregation pipeline: event, session, daily, then per-metric tables",
+        "7 materialized views powering per-store rollups",
+        "Traffic, retention, conversion, and device breakdowns for every store",
+      ],
+      tech: ["ClickHouse", "RabbitMQ", "TypeScript", "React"],
+      featured: true,
+      visualOpportunity:
+        "Materialized-view aggregation diagram; per-store analytics dashboard",
     },
     {
       slug: "trading-pipeline",
@@ -207,17 +291,6 @@ export function getProjectBySlug(slug: string): Project | undefined {
 
 export function getOtherProjects(): Project[] {
   return [
-    {
-      slug: "store-analytics",
-      title: "Store Traffic Analytics",
-      subtitle: "ClickHouse Data Warehouse, Converty",
-      description:
-        "Real-time store analytics dashboard built on ClickHouse. RabbitMQ ingestion, 7 materialized views, and a multi-stage aggregation pipeline (event → session → daily → per-metric tables) powering traffic, retention, conversion, and device breakdowns per store.",
-      angle: "ClickHouse analytics pipeline with materialized view aggregation for e-commerce traffic insights.",
-      highlights: [],
-      tech: ["ClickHouse", "RabbitMQ", "TypeScript", "React"],
-      featured: false,
-    },
     {
       slug: "aws-water-quality",
       title: "AWS MLOps Water Quality Pipeline",
@@ -574,6 +647,53 @@ export function getSkills(): SkillGroup[] {
     {
       category: "Languages",
       skills: ["Python", "TypeScript", "JavaScript", "Java", "C++", "C#", "Dart", "Go"],
+    },
+  ];
+}
+
+export function getServices(): Service[] {
+  return [
+    {
+      id: "ai-features",
+      title: "Production AI Features",
+      tagline: "From idea to a billed, monitored feature",
+      description:
+        "I build LLM features that survive real traffic, not weekend demos. Agents, chatbots, RAG, and generation pipelines that ship with cost accounting, rate limiting, caching, and prompt-injection defenses already wired in.",
+      deliverables: [
+        "Custom AI agents and multi-agent pipelines",
+        "Retrieval and vector search over your own data",
+        "Streaming chat and assistant UX",
+        "Per-request cost tracking and usage limits",
+      ],
+      idealFor: "Teams who want an AI feature live and paying its way, not a proof of concept.",
+    },
+    {
+      id: "mcp-integrations",
+      title: "MCP Servers & AI Integrations",
+      tagline: "Bring your product into the chat, safely",
+      description:
+        "I connect your platform to AI assistants through the Model Context Protocol, with per-tool scopes, tenant isolation, and clear permission boundaries. Your data reaches the model through one controlled surface, never a leaky direct hookup.",
+      deliverables: [
+        "MCP servers exposing your APIs to AI assistants",
+        "OAuth-scoped, per-tool access control",
+        "Single-tenant session isolation",
+        "Read-only and least-privilege boundaries by design",
+      ],
+      idealFor: "Products that want to be usable from Claude and other assistants without opening the floodgates.",
+    },
+    {
+      id: "backend-data",
+      title: "Backend & Data Engineering",
+      tagline: "The infrastructure your AI actually runs on",
+      description:
+        "The unglamorous half that decides whether any of it works. TypeScript and Node APIs, MongoDB and ClickHouse data models, real-time ingestion and analytics pipelines, containerized and deployed on Kubernetes.",
+      deliverables: [
+        "REST APIs with validation and clean service layers",
+        "Real-time ingestion and analytics pipelines",
+        "MongoDB, ClickHouse, Redis, RabbitMQ data plumbing",
+        "Docker and Kubernetes deployment with CI/CD",
+      ],
+      idealFor: "Founders and teams who need a backend that holds up as the AI layer grows on top of it.",
     },
   ];
 }

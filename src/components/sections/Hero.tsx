@@ -28,8 +28,8 @@ const TERMINAL_LINES = [
 const STATS = [
   { value: "12", label: "agents" },
   { value: "78K", label: "LOC" },
-  { value: "145+", label: "tests" },
-  { value: "925+", label: "commits" },
+  { value: "60K+", label: "convos" },
+  { value: "1K+", label: "generations" },
 ];
 
 const container = {
@@ -141,17 +141,17 @@ export default function Hero() {
             initial="hidden"
             animate="show"
           >
-            {/* Name */}
-            <motion.p
+            {/* Name (H1 for the name-query SEO signal) */}
+            <motion.h1
               variants={item}
               className="font-mono text-sm tracking-[0.3em] uppercase"
               style={{ color: "var(--hero-subtle)" }}
             >
               {SITE_CONFIG.name}
-            </motion.p>
+            </motion.h1>
 
             {/* Title with typing effect */}
-            <motion.h1
+            <motion.h2
               variants={item}
               className="mt-4 text-4xl sm:text-5xl lg:text-7xl font-serif italic leading-[1.1]"
               style={{ color: "var(--hero-text)" }}
@@ -168,7 +168,7 @@ export default function Hero() {
               />
               <br />
               <span className="text-gradient-gold">Engineer</span>
-            </motion.h1>
+            </motion.h2>
 
             {/* One-liner */}
             <motion.p
@@ -176,7 +176,7 @@ export default function Hero() {
               className="mt-6 text-lg sm:text-xl leading-relaxed max-w-md"
               style={{ color: "var(--hero-muted)" }}
             >
-              Building production AI systems end-to-end — from the model layer
+              Building production AI systems end-to-end, from the model layer
               to the infrastructure it runs on.
             </motion.p>
 
@@ -285,7 +285,7 @@ export default function Hero() {
                   className="ml-3 text-[11px] font-mono tracking-wide"
                   style={{ color: "var(--terminal-dim)" }}
                 >
-                  portfolio — deploy
+                  portfolio · deploy
                 </span>
               </div>
 

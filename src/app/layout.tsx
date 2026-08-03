@@ -26,30 +26,67 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: SITE_CONFIG.title,
-  description: SITE_CONFIG.description,
   metadataBase: new URL(SITE_CONFIG.url),
+  title: {
+    default: SITE_CONFIG.title,
+    template: "%s · Edam Hamza",
+  },
+  description: SITE_CONFIG.description,
+  applicationName: SITE_CONFIG.name,
+  authors: [{ name: SITE_CONFIG.name, url: SITE_CONFIG.url }],
+  creator: SITE_CONFIG.name,
+  publisher: SITE_CONFIG.name,
+  keywords: [
+    "Edam Hamza",
+    "Edam Hamza engineer",
+    "Edam Hamza GenAI",
+    "Edam Hamza portfolio",
+    "GenAI Engineer",
+    "Generative AI Engineer",
+    "AI Engineer Tunisia",
+    "backend engineer Tunisia",
+    "LLM engineer",
+    "MCP server developer",
+    "full-stack engineer",
+    "Converty",
+    "Ariana Tunisia",
+  ],
+  category: "technology",
   icons: {
     icon: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
   },
   manifest: "/manifest.json",
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     title: SITE_CONFIG.title,
     description: SITE_CONFIG.description,
     url: SITE_CONFIG.url,
     siteName: SITE_CONFIG.name,
+    locale: "en_US",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: SITE_CONFIG.title,
     description: SITE_CONFIG.description,
+    creator: "@EdamHamza",
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
   },
+  // Replace the placeholder below with the token Google Search Console gives you,
+  // then this becomes a verified <meta name="google-site-verification"> tag.
+  // verification: { google: "YOUR_GOOGLE_SEARCH_CONSOLE_TOKEN" },
 };
 
 // Inline script to prevent theme flash — runs before React hydration
