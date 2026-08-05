@@ -194,15 +194,17 @@ export function getFeaturedProjects(): Project[] {
       title: "Store Traffic Analytics",
       subtitle: "ClickHouse Data Warehouse, Converty",
       description:
-        "Real-time store analytics built on ClickHouse. RabbitMQ ingestion feeds a multi-stage aggregation pipeline (event, session, daily, per-metric) across 7 materialized views, powering traffic, retention, conversion, and device breakdowns for every store.",
+        "Real-time store analytics built on ClickHouse, ingesting 4M+ events per hour across every Converty store. RabbitMQ ingestion feeds a multi-stage aggregation pipeline (event, session, daily, per-metric) across 7 materialized views, powering traffic, retention, conversion, and device breakdowns for every store.",
       angle:
-        "A production data-engineering system, not a notebook. ClickHouse-backed analytics with RabbitMQ ingestion and a 7-view materialized aggregation pipeline, giving every seller real-time traffic, retention, and conversion insight.",
+        "A production data-engineering system, not a notebook. ClickHouse-backed analytics ingesting 4M+ events per hour, with RabbitMQ ingestion and a 7-view materialized aggregation pipeline, giving every seller real-time traffic, retention, and conversion insight.",
       stats: [
+        { value: "4M+", label: "events / hour" },
         { value: "7", label: "materialized views" },
         { value: "4", label: "metric domains" },
         { value: "Real-time", label: "ingestion" },
       ],
       highlights: [
+        "Ingests 4M+ events per hour across all Converty stores",
         "ClickHouse data warehouse with RabbitMQ real-time event ingestion",
         "Multi-stage aggregation pipeline: event, session, daily, then per-metric tables",
         "7 materialized views powering per-store rollups",
