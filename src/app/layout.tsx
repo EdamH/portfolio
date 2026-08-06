@@ -84,9 +84,8 @@ export const metadata: Metadata = {
       "max-video-preview": -1,
     },
   },
-  // Replace the placeholder below with the token Google Search Console gives you,
-  // then this becomes a verified <meta name="google-site-verification"> tag.
-  // verification: { google: "YOUR_GOOGLE_SEARCH_CONSOLE_TOKEN" },
+  // Verifies the site for Google Search Console via <meta name="google-site-verification">.
+  verification: { google: "wWu_sHQsd1vBM15ItfWmdKonuslpinYQji5y4CDHA9Q" },
 };
 
 // Inline script to prevent theme flash — runs before React hydration
