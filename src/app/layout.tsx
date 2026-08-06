@@ -93,11 +93,9 @@ const themeScript = `
 (function() {
   try {
     var theme = localStorage.getItem('theme');
+    // Light only if the user explicitly picked it; everything else defaults to
+    // dark. System (prefers-color-scheme) is intentionally not consulted.
     if (theme === 'light') {
-      document.documentElement.classList.remove('dark');
-    } else if (theme === 'dark' || !theme) {
-      document.documentElement.classList.add('dark');
-    } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
       document.documentElement.classList.remove('dark');
     } else {
       document.documentElement.classList.add('dark');
