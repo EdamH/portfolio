@@ -190,6 +190,46 @@ export function getFeaturedProjects(): Project[] {
         "Screenshots of the Editorial Atelier UI, before/after evolution",
     },
     {
+      slug: "tally",
+      title: "Tally",
+      subtitle: "Local-First Money Manager for Tunisia & MENA",
+      description:
+        "A privacy-first personal finance app built from Tunisian reality: a non-convertible dinar, Zakat, remittances, and three-decimal millimes. The whole ledger lives on-device in SQLite, native on Android and WebAssembly + OPFS on the web, so the installable PWA works fully offline. Cloud sync exists, but only if you turn it on.",
+      angle:
+        "Full product ownership, solo: domain model, design system, engineering, tests, and shipping. The heart is a pure, unit-tested money engine where balance and net worth are two honest numbers and every month ties to an exact cash-ledger identity. On top sits a custom 'Warm Ledger' design system in three languages with full Arabic RTL.",
+      stats: [
+        { value: "481", label: "unit tests" },
+        { value: "3", label: "languages, full RTL" },
+        { value: "2", label: "platforms" },
+        { value: "23K", label: "LOC TypeScript" },
+      ],
+      highlights: [
+        "Local-first: the ledger is read from on-device SQLite at launch and written through per row; the web build runs the same engine on SQLite WASM persisted in OPFS, so the PWA works offline",
+        "Balance vs net worth modeled honestly: cash held vs what you are owed and owe, and every month's view ties to the identity balance = brought forward + income - expenses + corrections + debt flow",
+        "Debts live on person accounts: lend, borrow, repay, and forgive; a forgiven debt books as real spending or income without ever double-draining the cash account",
+        "Cross-currency transfers capture the rate you actually got: type either side of the exchange, flip the quote direction, and the booked rate stays on the transaction",
+        "Budgets normalize mixed periods to a monthly plan and surface 'Everything else', the spending no budget covers, so nothing hides from the meter",
+        "MENA-first features: Zakat tracker, remittance helper, stable-value net worth in USD/EUR/gold, English/French/Arabic with full right-to-left layout",
+        "Fail-safe durability: versioned backup envelopes, storage-eviction recovery on web, and optional cloud sync that never discards an unsynced edit",
+        "A conventions test greps the source tree so closed bug classes stay closed, e.g. every account picker must go through one canonical filter",
+      ],
+      tech: [
+        "React Native",
+        "Expo",
+        "TypeScript",
+        "SQLite",
+        "WebAssembly",
+        "OPFS",
+        "React Native Web",
+        "Supabase",
+        "Jest",
+      ],
+      link: "https://github.com/EdamH/tally",
+      featured: true,
+      visualOpportunity:
+        "Phone-frame gallery: Warm Ledger design system, light and dark, Arabic RTL",
+    },
+    {
       slug: "store-analytics",
       title: "Store Traffic Analytics",
       subtitle: "ClickHouse Data Warehouse, Converty",

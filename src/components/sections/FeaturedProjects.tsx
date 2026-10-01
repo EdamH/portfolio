@@ -113,6 +113,17 @@ export default function FeaturedProjects() {
                     </a>
                   )}
 
+                  {project.demo && (
+                    <a
+                      href={project.demo}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 font-mono text-xs text-accent hover:text-accent transition-colors duration-300"
+                    >
+                      Try it live {"\u2197"}
+                    </a>
+                  )}
+
                   {project.collaborator && (
                     <span className="font-mono text-xs text-muted">
                       w/{" "}

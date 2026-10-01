@@ -26,6 +26,87 @@ export interface ProjectDetail {
 }
 
 export const PROJECT_DETAILS: Record<string, ProjectDetail> = {
+  tally: {
+    screenshots: [
+      {
+        src: "/projects/tally/shot-home.png",
+        alt: "Tally home screen",
+        caption: "Home: safe-to-spend hero, balance vs net worth, accounts rail",
+        fit: "contain",
+      },
+      {
+        src: "/projects/tally/shot-home-ar.png",
+        alt: "Tally home in Arabic",
+        caption: "The same screen in Arabic, full right-to-left layout",
+        fit: "contain",
+      },
+      {
+        src: "/projects/tally/shot-debts.png",
+        alt: "Debts and people",
+        caption: "Debts tracked on person accounts, beside your money, not inside it",
+        fit: "contain",
+      },
+      {
+        src: "/projects/tally/shot-forgive.png",
+        alt: "Forgiving a debt",
+        caption: "Forgiveness books a write-off as real spending, cash untouched",
+        fit: "contain",
+      },
+      {
+        src: "/projects/tally/shot-transfer-fx.png",
+        alt: "Cross-currency transfer",
+        caption: "Cross-currency transfer: flip the quote, type either side, keep the booked rate",
+        fit: "contain",
+      },
+      {
+        src: "/projects/tally/shot-budgets.png",
+        alt: "Budgets",
+        caption: "Budgets with pace projection and the Everything else row",
+        fit: "contain",
+      },
+    ],
+    narrative: [
+      "Tally started from a simple observation: every finance app I tried assumes a convertible currency, connected banks, and a subscription. Tunisia has none of those. The dinar is non-convertible with a street rate that drifts from the official one, Zakat is a real yearly calculation, remittances are a meaningful share of the economy, and amounts carry three decimals because millimes exist. So I built the app around that reality instead of fighting it.",
+      "The architecture is local-first all the way down. On launch the whole ledger is read from on-device SQLite into memory; every edit writes straight back to disk. On the web the exact same engine runs on SQLite compiled to WebAssembly, persisted in the browser's origin-private file system, which makes the installable PWA fully offline-capable. Cloud sync through Supabase exists as an opt-in, and the sync path is built to fail safe: a pending-sync flag guarantees an unsynced edit is never overwritten by a stale server copy.",
+      "The core is a pure TypeScript money engine, kept free of React and platform imports, covered by 481 unit tests. Its proudest invariant is the monthly cash-ledger identity: balance at month end equals brought-forward plus income minus expenses plus corrections plus debt flow, to the millime. Every feature that touches money has to preserve that identity, and the tests enforce it.",
+      "Debts were the hardest modeling problem. Money you lend leaves your account the day you lend it, but what a person owes you is not spending, so debts live on hidden person accounts: balance stays honest, net worth folds in what you are owed and what you owe. Forgiving a debt posts the write-off on the person account itself, so it becomes a categorized expense or income in your stats while your cash is never drained twice.",
+      "The interface is a custom design system called Warm Ledger: parchment surfaces, hairline borders, one serif voice (Fraunces) reserved for money, and a rationed terracotta accent. It ships in English, French, and Arabic with full right-to-left layout, light and dark, and a conventions test that greps the source tree so closed bug classes, like ad hoc account filters, can never quietly return.",
+      "Tally is open source and versioned; the repo includes the architecture map and the full Jest suite. It runs today as an Android app and an installable web app.",
+    ],
+    architecture: [
+      {
+        title: "Interface",
+        nodes: [
+          { id: "screens", label: "Screens (RN + RN-Web)", detail: "One file per screen; hand-rolled typed overlay navigation" },
+          { id: "warmledger", label: "Warm Ledger design system", detail: "Custom primitives, serif money voice, light/dark, 3 languages with RTL" },
+          { id: "widgets", label: "Android widgets", detail: "Quick add, this month, budgets, net worth, fed by a snapshot bridge" },
+        ],
+      },
+      {
+        title: "Pure core",
+        nodes: [
+          { id: "engine", label: "Money engine", detail: "Balance vs net worth, cash-ledger identity, multi-currency conversion" },
+          { id: "domains", label: "Domain logic", detail: "Budgets, debts and forgiveness, recurring, insights, Zakat, forecasting" },
+          { id: "tests", label: "481 unit tests", detail: "Ledger invariants plus a conventions test over the source tree" },
+        ],
+      },
+      {
+        title: "Data",
+        nodes: [
+          { id: "store", label: "Store", detail: "React context over module state; per-row write-through to disk" },
+          { id: "sqlite", label: "SQLite", detail: "Native on Android; WASM + OPFS on web for a fully offline PWA" },
+          { id: "backup", label: "Backup & recovery", detail: "Versioned envelopes, safe restore, storage-eviction recovery gate" },
+        ],
+      },
+      {
+        title: "Optional cloud",
+        nodes: [
+          { id: "supabase", label: "Supabase", detail: "Postgres + Auth; row-level security, one owner policy per table" },
+          { id: "sync", label: "Fail-safe sync", detail: "Local mirror always kept; pendingSync flag so no edit is ever lost" },
+        ],
+      },
+    ],
+  },
   uranus: {
     screenshots: [
       { 

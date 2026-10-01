@@ -273,6 +273,16 @@ export default async function ProjectPage({ params }: Props) {
                 View on GitHub
               </a>
             )}
+            {project.demo && (
+              <a
+                href={project.demo}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 font-mono text-sm text-accent hover:text-foreground transition-colors duration-300"
+              >
+                Try it live {"\u2197"}
+              </a>
+            )}
             {project.collaborator && (
               <span className="font-mono text-sm text-muted">
                 w/{" "}

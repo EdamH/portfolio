@@ -7,6 +7,8 @@ export interface Project {
   highlights: string[];
   tech: string[];
   link?: string;
+  /** Live app / demo URL, rendered as "Try it live" beside the GitHub link. */
+  demo?: string;
   collaborator?: string;
   collaboratorUrl?: string;
   stats?: { value: string; label: string }[];
