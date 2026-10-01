@@ -225,6 +225,7 @@ export function getFeaturedProjects(): Project[] {
         "Jest",
       ],
       link: "https://github.com/EdamH/tally",
+      demo: "https://tally-edams-projects-7732d44a.vercel.app",
       featured: true,
       visualOpportunity:
         "Phone-frame gallery: Warm Ledger design system, light and dark, Arabic RTL",
